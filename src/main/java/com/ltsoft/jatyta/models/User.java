@@ -3,6 +3,10 @@ package com.ltsoft.jatyta.models;
 import java.util.HashSet;
 import java.util.Set;
 
+import com.fasterxml.jackson.annotation.JsonAlias;
+import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.fasterxml.jackson.annotation.JsonProperty;
+import com.fasterxml.jackson.annotation.JsonPropertyDescription;
 import jakarta.persistence.*;
 import jakarta.validation.constraints.Email;
 import jakarta.validation.constraints.NotBlank;
@@ -10,7 +14,7 @@ import jakarta.validation.constraints.Size;
 
 @Entity
 @Table( name = "users", 
-        uniqueConstraints = { 
+        uniqueConstraints = {
           @UniqueConstraint(columnNames = "username"),
           @UniqueConstraint(columnNames = "email") 
         })
@@ -18,6 +22,15 @@ public class User {
   @Id
   @GeneratedValue(strategy = GenerationType.IDENTITY)
   private Long id;
+
+  @Size(max = 50)
+  private String firstname;
+
+  @Size(max = 100)
+  private String lastname;
+
+  @Size(max = 15)
+  private String phone;
 
   @NotBlank
   @Size(max = 20)
@@ -39,7 +52,10 @@ public class User {
   public User() {
   }
 
-  public User(String username, String email, String password) {
+  public User(String firstname, String lastname, String phone, String username, String email, String password) {
+    this.firstname = firstname;
+    this.lastname = lastname;
+    this.phone = phone;
     this.username = username;
     this.email = email;
     this.password = password;
@@ -52,6 +68,17 @@ public class User {
   public void setId(Long id) {
     this.id = id;
   }
+
+  public String getFirstname() { return firstname; }
+
+  public void setFirstname(String firstname) { this.firstname = firstname; }
+
+  public String getLastname() { return lastname; }
+
+  public void setLastname(String lastname) { this.lastname = lastname; }
+  public String getPhone() { return phone; }
+
+  public void setPhone(String phone) { this.phone = phone; }
 
   public String getUsername() {
     return username;
@@ -73,9 +100,7 @@ public class User {
     return password;
   }
 
-  public void setPassword(String password) {
-    this.password = password;
-  }
+  public void setPassword(String password) { this.password = password; }
 
   public Set<Role> getRoles() {
     return roles;
@@ -83,5 +108,5 @@ public class User {
 
   public void setRoles(Set<Role> roles) {
     this.roles = roles;
-  }    
+  }
 }
